@@ -1,0 +1,42 @@
+cmake_minimum_required(VERSION 2.8)
+project(mayaThread)
+
+set(MAYA_LOCATION "C:/Program Files/Autodesk/Maya2017")
+set(MAYA_INCLUDE_DIR "C:/Users/Administrator/Desktop/maya2017u5/devkitBase/include")
+set(MAYA_LIB_DIR ${MAYA_LOCATION}/lib)
+set(MAYA_PYTHON_INCLUDE_DIR ${MAYA_INCLUDE_DIR}/python2.7)
+#print upper value when possible
+
+#set source
+set(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/plugin.cpp)
+
+#set include dir
+include_directories(${MAYA_INCLUDE_DIR})
+
+#set link dir
+link_directories(${MAYA_LIB_DIR})
+
+#target
+add_library(mayaThread SHARED ${SOURCES})
+target_link_libraries(mayaThread 
+    Foundation.lib 
+    OpenMaya.lib 
+    OpenMayaAnim.lib 
+    OpenMayaFX.lib 
+    OpenMayaRender.lib 
+    OpenMayaUI.lib )
+set_target_properties(mayaThread PROPERTIES SUFFIX .mll)
+set_target_properties(mayaThread PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties(mayaThread PROPERTIES CXX_STANDARD 11)
+target_compile_definitions(mayaThread PUBLIC
+    NDEBUG
+    NT_PLUGIN
+    TBB_USE_DEBUG=0
+    __TBB_LIB_NAME=tbb.lib
+    REQUIRE_IOSTREAM
+    AW_NEW_IOSTREAMS
+    Bits64_)
+set_target_properties(mayaThread PROPERTIES LINK_FLAGS "/export:initializePlugin /export:uninitializePlugin")
+
+
+install(TARGETS mayaThread DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
