@@ -31,8 +31,9 @@ set_target_properties(mayaThread PROPERTIES CXX_STANDARD 11)
 target_compile_definitions(mayaThread PUBLIC
     NDEBUG
     NT_PLUGIN
-    TBB_USE_DEBUG=0
-    __TBB_LIB_NAME=tbb.lib
+    WIN32
+    # TBB_USE_DEBUG=0
+    # __TBB_LIB_NAME=tbb.lib
     REQUIRE_IOSTREAM
     AW_NEW_IOSTREAMS
     Bits64_)
